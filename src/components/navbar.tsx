@@ -3,7 +3,7 @@ import React from "react";
 
 export const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center rounded p-7">
+    <nav className="flex justify-between items-center p-7">
       <div className="text-2xl font-bold">
         <Link href="#">LOGO</Link>
       </div>
