@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, GraduationCap } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -37,14 +38,14 @@ export default function LoginForm() {
     try {
       // Simular autenticación
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      
+      // Guardar datos del usuario
       localStorage.setItem("auth-token", "mock-jwt-token-" + Date.now());
-      localStorage.setItem("user-role", formData.userType);
       localStorage.setItem("user-email", formData.email);
-
+      localStorage.setItem("user-role", formData.userType);
+      
       console.log("Login successful:", formData);
-
-      router.push("/dashboard");
+      router.push("/");
     } catch (err) {
       setError("Credenciales inválidas. Por favor, intenta de nuevo.");
     } finally {
@@ -135,8 +136,23 @@ export default function LoginForm() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              /* onClick={} */
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
               {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+            </Button>
+
+            <Button
+              type="button"
+              className="rounded-full"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+              disabled={isLoading}
+            >
+              <FcGoogle className="h-4 w-4 mr-2" />
+              {isLoading ? "Iniciando..." : "Iniciar con Google"}
             </Button>
 
             <div className="text-center space-y-2">
